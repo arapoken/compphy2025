@@ -1,7 +1,10 @@
 # ---------------------Error estimation of measurements----------------------
 # read the line from the file and store them in a list
+import os
+current_path = os.path.dirname(__file__)
+file_path = os.path.join(current_path, '3-1.txt')
 data = []
-with open('3-1.txt', 'r') as file:
+with open(file_path, 'r') as file:
     for line in file:
         line = line.strip()  # remove the whitespace characters
         if line:  # make sure that the line is not empty

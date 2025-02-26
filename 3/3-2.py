@@ -17,6 +17,7 @@ j[1][0] = 0.0
 for n in range(2, 11):
     j[n][1:] = ((2*n-1)/x_nonzero)*j[n-1][1:] - j[n-2][1:]
     j[n][0] = 0.0
+    print(j[n][1])
 
 '''---------------------Downward Iteration---------------------'''
 # define the function j100,j101 and the boundary condition
