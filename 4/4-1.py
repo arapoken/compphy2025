@@ -11,7 +11,7 @@ def f(x):
     return np.exp(-(x-u)**2/(2*sigma**2))/(sigma*np.sqrt(2*np.pi))
 
 # prepare the interpolation points (x_i, y_i)
-n = 4
+n = 2
 x = np.zeros(n+1)
 y = np.zeros(n+1)
 for i in range(0,n+1):
@@ -32,26 +32,28 @@ for k in range(0, n+1):
     for i in range(0, 1000):
         sum[i] += lagrange(X[i], k)*y[k]
 
-# plot the original function and the interpolation function
+# (a) plot the original function and the interpolation function
 plt.plot(X, f(X), 'b', label='f(x)')
-plt.plot(X, sum, 'r', label='Lagrange interpolation')
+plt.plot(X, sum, 'r', label='P_n(x)')
 plt.legend()
 plt.xlabel('x')
 plt.ylabel('y')
+plt.title('lagrange interpolation n='+ str(n))
 plt.grid()
 plt.show()
 
-# plot the error of the interpolation function
+# (b) plot the error of the interpolation function
 plt.plot(X, np.abs(sum-f(X)), 'g', label='Error')
 plt.legend()
 plt.xlabel('x')
 plt.ylabel('|f(x)-P_n(x)|')
+plt.title('the error of lagrange interpolation n='+ str(n))
 plt.grid()
 plt.show()
 
-# find the smallest n to satisfy the error < 0.0005
+# (c) find the smallest n satisfying the error < 0.0005
 error = np.abs(sum-f(X)).max()
-while(error >= 0.0005):
+while(error > 0.0005):
     n += 1
     x = np.zeros(n+1)
     y = np.zeros(n+1)
@@ -66,10 +68,11 @@ while(error >= 0.0005):
 print('The smallest n =', n)
 
 # At the time, plot the error of the interpolation function
-plt.plot(X, np.abs(sum-f(X)), 'g', label='Error (n=10)')
+plt.plot(X, np.abs(sum-f(X)), 'g', label='Error')
 plt.legend()
 plt.xlabel('x')
 plt.ylabel('|f(x)-P_n(x)|')
+plt.title('the error of lagrange interpolation n='+ str(n))
 plt.grid()
 plt.ylim(0, 0.0005)
 plt.show()
