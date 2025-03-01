@@ -47,13 +47,13 @@ axes[0].set_ylabel('jn(x)')
 axes[0].legend()
 
 # the second subplot
-axes[0].plot(x, kn(2,x)/A, label='j2')
-axes[0].plot(x, kn(5,x)/A, label='j5')
-axes[0].plot(x, kn(10,x)/A, label='j10')
-axes[0].set_title('Downward method')
-axes[0].set_xlabel('x')
-axes[0].set_ylabel('jn(x)')
-axes[0].legend()
+axes[1].plot(x, kn(2,x)/A, label='j2')
+axes[1].plot(x, kn(5,x)/A, label='j5')
+axes[1].plot(x, kn(10,x)/A, label='j10')
+axes[1].set_title('Downward method')
+axes[1].set_xlabel('x')
+axes[1].set_ylabel('jn(x)')
+axes[1].legend()
 
 # adjust the layout and show the plot
 plt.tight_layout()
