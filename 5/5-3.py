@@ -29,7 +29,7 @@ for j in range(0, len(T)):
     for i in range(2, n-1):
         B_1st[i] = (B(x[i-2],t)-8*B(x[i-1],t)+8*B(x[i+1],t)-B(x[i+2],t)) / (12*h)
 
-    # determine the first point when derivative is less than 0 as an extreme point
+    # determine the first point when derivative changes from positive to negative as an extreme point
     index_extre = [i for i in range(0, len(B_1st)) if B_1st[i-1] > 0 and B_1st[i] < 0]
     x_extre[j] = x[index_extre[0]]
 
@@ -59,7 +59,7 @@ def lambda_extre(T, A):
     return A/T
 p0 = [3000.0]
 popt, pcov = curve_fit(lambda_extre, T, x_extre, p0=p0)
-print(f'Wien\'s displacement law: λ_max·T={popt[0]}')
+print(f'Wien\'s displacement law: λ_max·T={popt[0]:.4f} um·K')
 
 # plot the extremum point changing with T
 plt.plot(T, x_extre, 'o', markersize=1.0, c='black')
@@ -71,4 +71,14 @@ plt.title('the wavelength of extremum point changing with T')
 plt.grid(True)
 plt.show()
 
-# ------------------(1) Numerical Integral ------------------
+# ------------------(2) Numerical Integral ------------------
+
+a, b, m = 0.3, 0.8, 50
+h = (b-a)/(2*m)
+x_simpson = np.linspace(a, b, 2*m+1) # define the integral interval
+B_simpson = B(x_simpson, 5000) # define the function to be integrated
+
+sum = 0
+for i in range(0, m):
+    sum += h/3*(B_simpson[2*i]+4*B_simpson[2*i+1]+B_simpson[2*i+2]) # Simpson's rule
+print(f'The integral of B_lambda from 0.3um to 0.8um at T=5000K is {sum:.4f} um^{-4}')
