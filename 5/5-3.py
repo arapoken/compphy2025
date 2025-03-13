@@ -5,7 +5,7 @@ from scipy.optimize import curve_fit
 
 # ------------------(1) Numerical differentiation ------------------
 c1, c2 = 1.0, 1.44e4
-x_0, x_n, n = 1e-5, 5, 500
+x_0, x_n, n = 1e-5, 5, 5000
 h = (x_n - x_0) /n
 x = np.zeros(n+1)
 for i in range(0, n+1):

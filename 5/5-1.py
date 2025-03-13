@@ -3,9 +3,11 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit
+import os
+current_path = os.path.dirname(__file__)
+file_path = os.path.join(current_path, 'higgs-data.txt')
 
-
-df = pd.read_csv('higgs-data.txt', sep=', ', engine='python', header=None) # read the file 
+df = pd.read_csv(file_path, sep=', ', engine='python', header=None) # read the file 
 x_data, y_data = df[0], df[1]
 
 def func(x, A, B, C, D, E): # define the sum function

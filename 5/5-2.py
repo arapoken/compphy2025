@@ -4,8 +4,11 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.constants import h, c, k
 from scipy.optimize import curve_fit
+import os
+current_path = os.path.dirname(__file__)
+file_path = os.path.join(current_path, 'cmb-data.txt')
 
-df = pd.read_csv('cmb-data.txt', sep=r'\s+', engine='python', header=None) # read the file 
+df = pd.read_csv(file_path, sep=r'\s+', engine='python', header=None) # read the file 
 v_data, I_data = df[0], df[1] # get the data in CGS
 h_cgs, c_cgs, k_cgs = h*1e7, c*1e2, k*1e7 # convert the units of constants to CGS
 
