@@ -2,10 +2,10 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-N = 250
+N = 1000
 h = 7/N
 x = np.linspace(0, 7, N, endpoint=False)
-n = 10 # quantum number
+n = 15 # quantum number
 
 u = np.zeros(N) # du/dx = v
 v = np.zeros(N) # dv/dx = (x**2 - 2*n -1)*u
@@ -36,10 +36,6 @@ if n % 2 == 0:
 else:
     u = np.hstack((-np.flip(u), u)) # odd extension
 
-rho = 1 / np.sqrt(2*n+1-x[(2*n+1-x**2) > 0]**2) # classical oscillator probability density
-rho = rho / np.sqrt(np.sum(rho**2*h)) # normalization
-print(np.sum(rho**2*h)) # check the normalization
-
 # plot the quantum harmonic oscillator
 plt.plot(x, u, 'b-')
 plt.xlabel('x')
@@ -48,15 +44,17 @@ plt.title('Quantum Harmonic Oscillator (n='+str(n)+')')
 plt.grid()
 plt.show()
 
+# classical oscillator probability density
+rho = 1 / (np.pi * np.sqrt(2*n+1-x[(2*n+1-x**2) > 0]**2)) # np.pi for normalization
+u_2 = np.square(u) / np.sum(h*np.square(u)) # np.sum for normalization
+
 # plot the comparison between quantum and classical harmonic oscillators
-plt.plot(x, np.square(u), 'b-')
+plt.plot(x, u_2, 'b-')
 plt.plot(x[(2*n+1-x**2) > 0], rho, 'r-')
 plt.xlabel('x')
 plt.ylabel('Probability density')
 plt.legend(['Quantum situation','Classical situation'])
 plt.title('Harmonic Oscillator Probability (n='+str(n)+')')
+plt.ylim(0.0, 1.1*np.max(u_2))
 plt.grid()
 plt.show()
-
-# problem 1: the boundary(x=-7 and x=7) action of quantum harmonic oscillator seems odd
-# problem 2: x**2 > 2*n +1, invalid value for sqrt
