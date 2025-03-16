@@ -2,7 +2,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-N = 1000
+N = 3000
 h = 7/N
 x = np.linspace(0, 7, N, endpoint=False)
 n = 15 # quantum number

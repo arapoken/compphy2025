@@ -44,3 +44,10 @@ plt.title('Classic Damped Oscillator')
 plt.grid()
 plt.show()
 
+# plot the error
+plt.plot(t, np.abs(phi-y), 'r-')
+plt.xlabel('Time')
+plt.ylabel('Error')
+plt.title('Error between Numerical and Analytical result')
+plt.grid()
+plt.show()
