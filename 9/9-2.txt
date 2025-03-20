@@ -1,0 +1,27 @@
+9-2 
+When total throws is 1000, after 10 trials
+The simulation resulut is 3.3792
+The theoretical result is 2.550164039877345
+The error of the integration is 0.8290359601226549
+The variance of multiple trials is 3.78535936
+
+When total throws is 10000, after 10 trials
+The simulation resulut is 2.67264
+The theoretical result is 2.550164039877345
+The error of the integration is 0.12247596012265483
+The variance of multiple trials is 0.12677283839999998
+
+When total throws is 100000, after 10 trials
+The simulation resulut is 2.556928
+The theoretical result is 2.550164039877345
+The error of the integration is 0.0067639601226550106
+The variance of multiple trials is 0.024999100416000005
+
+When total throws is 1000000, after 10 trials
+The simulation resulut is 2.5709568000000003
+The theoretical result is 2.550164039877345
+The error of the integration is 0.020792760122655185
+The variance of multiple trials is 0.001799786332159995
+
+9-3
+After 113.43000000002112 minutes, N_Bi209 > N_Bi213
