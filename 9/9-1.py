@@ -15,11 +15,16 @@ for i in range(nsteps):
     positions[random_num < pl] -= 1  # left move
     positions[(pl <= random_num) & (random_num < pl+pr)] += 1  # right move
 
+print(f'simulational mean value: {np.mean(positions)}')
+print(f'simulational standard error: {np.sqrt(np.var(positions))}')
+
 # theoretically it is a normal distribution according to the central limit theorem
 x = np.linspace(positions.min(), positions.max(), 1000)
 mu = nsteps/3
 sigma = np.sqrt(5*nsteps/9)
 norm_pdf = 1/(sigma*np.sqrt(2*np.pi)) * np.exp(-(x-mu)**2/(2*sigma**2))
+print(f'theoretical mean value: {mu}')
+print(f'theoretical standard error: {sigma}')
 
 # plot the result of both simulation and theory
 plt.hist(positions, bins=50, density=True, alpha=0.8, label=f'Simulation: t={nsteps}s')  # density=True to make it normalized
