@@ -1,63 +1,71 @@
 # ----------------- 2-D Ising model simulation -----------------
+import time
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 
-seed = 89
-beta = 0.1
+beta = 1.0
 J = 1.0
 L = 20
-nsteps = 500000  # maxium simulation steps
-np.random.seed(seed)
+nsteps = 100000  # maxium simulation steps
 
-S = np.random.choice([1,-1],size=(L+2,L+2))  # randomize the initial configuration
-S[0][:], S[:][0], S[L+1][:], S[:][L+1] = 0, 0, 0, 0  # set S=0 at the boundary 
+fig, ax = plt.subplots(1,2, figsize=(10,4))
 
-energies = []
-spins = []
+current_time = int(time.time())
+np.random.seed(current_time)
+seeds = np.random.randint(0, 1e4, size=5)
+colors = ['blue', 'green', 'red', 'purple', 'orange']
 
-# simulation
-for _ in range(nsteps):
+for idx, seed in enumerate(seeds):
+    np.random.seed(seed)
+    S = np.random.choice([1,-1],size=(L+2,L+2))  # randomize the initial configuration
+    S[0][:], S[:][0], S[L+1][:], S[:][L+1] = 0, 0, 0, 0  # boundary condition
+
+    energies = []
+    spins = []
+
+    # simulation
+    for _ in range(nsteps):
+        
+        # randomly choose a spin
+        i,j = np.random.randint(1, L+1), np.random.randint(1, L+1)
+
+        # calculate the local energy cost of a random flip
+        neighbours = S[i-1][j] + S[i][j-1] + S[i+1][j] + S[i][j+1]
+        delta_E = 2 * J * S[i][j] * neighbours
+        
+        # Metropolis–Hastings algorithm
+        if delta_E < 0 or np.random.rand() < np.exp(-delta_E * beta):
+            S[i][j] = - S[i][j]
+
+        # store the data each 1000 steps
+        if _ % 1000 == 0:
+            E_total = 0.0
+            # energy of the current configuration
+            for i in range(1, L+1):
+                for j in range(1, L+1):
+                    E_total += -J * S[i][j] * (S[i+1][j] + S[i][j+1])
+                    # only calculate interaction with right and bottom spins to avoid double counting        
+            energies.append(E_total)
+            spins.append(np.sum(S[1:-1, 1:-1]))
+    print(f'When beta = {beta}, seed = {seed}:')
+    print(f'Total energy at equilibrium: E = {E_total}')
+    print(f'Total spin at equilibrium: S = {np.sum(S[1:-1][1:-1])}')
     
-    # choose a spin at a random position
-    i,j = np.random.randint(1, L+1), np.random.randint(1, L+1)
+    ax[0].plot(range(len(energies)), energies, color=colors[idx], label=f'seed = {seed}')
+    ax[1].plot(range(len(spins)), spins, color=colors[idx], label=f'seed = {seed}')
 
-    # calculate the local energy cost of a random flip occuring at S_ij
-    neighbours = S[i-1][j] + S[i][j-1] + S[i+1][j] + S[i][j+1]
-    delta_E = 2 * J * S[i][j] * neighbours
-    
-    # Metropolis–Hastings algorithm
-    if delta_E < 0 or np.random.rand() < np.exp(-delta_E * beta):
-        S[i][j] = - S[i][j]
+ax[0].set_ylabel('E / J')
+ax[0].set_xlabel('t / 1000 steps')
+ax[0].set_title(f'Total energy when beta={beta}')
+ax[0].legend()
+ax[1].set_ylabel('S')
+ax[1].set_xlabel('t / 1000 steps')
+ax[1].set_title(f'Total spin when beta={beta}')
+ax[1].legend()
 
-    # store the data each 1000 steps
-    if _ % 1000 == 0:
-        E_total = 0.0
-        # energy of the current configuration
-        for i in range(1, L+1):
-            for j in range(1, L+1):
-                E_total += -J * S[i][j] * (S[i+1][j] + S[i][j+1])
-                # only calculate interaction with right and bottom spins to avoid double counting        
-        energies.append(E_total)
-        spins.append(np.sum(S[1:-1, 1:-1]))
-
-# print the result
-print(f'Total spin at equilibrium: S = {np.sum(S[1:-1][1:-1])}')
-print(f'Total energy at equilibrium: E = {E_total}')
-
-# plot the result
-plt.plot(range(len(energies)), energies, 'b-',label='Total energy of the system')
-plt.ylabel('E / J')
-plt.xlabel('t / *1000 steps')
-plt.legend()
-plt.savefig(f'E_beta={beta}_seed={seed}.png')
-plt.show()
-
-plt.plot(range(len(spins)), spins, 'r-',label='Total spin of the system')
-plt.ylabel('S ')
-plt.xlabel('t / 1000 steps')
-plt.legend()
-plt.savefig(f'S_beta={beta}_seed={seed}.png')
+plt.tight_layout()
+plt.savefig(f'10-1_beta={beta}_T={1/beta:.1f}.png')
 plt.show()
 
 # animation
@@ -84,5 +92,5 @@ def update(S):
     cax.set_data(S[1:-1, 1:-1])  # update the grid data without boundary
     return [cax]
 
-ani = FuncAnimation(fig, update, simulate(S), interval=10, blit=True)
+ani = FuncAnimation(fig, update, simulate(S), interval=100, blit=True)
 plt.show()
